@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/newPet"
+    tools:context="com.example.andorid.mypets.EnterPetDetails">
+
+    <TextView
+        android:id="@+id/mainText"
+        android:text="Enter Pet Details:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/petType"
+        android:text="pet type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainText"/>
+    <EditText
+        android:id="@+id/petTypeIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petType"
+        android:inputType="text"/>
+    <TextView
+        android:id="@+id/petName"
+        android:text="pet name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/petTypeIn"/>
+    <EditText
+        android:id="@+id/petNameIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petName"
+        android:inputType="textCapWords"/>
+    <TextView
+        android:id="@+id/petBirthday"
+        android:text="pet birthday(mm/dd/yyyy)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/petNameIn"/>
+    <EditText
+        android:id="@+id/petBirthdayIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petBirthday"
+        android:inputType="number"/>
+    <TextView
+        android:id="@+id/petWeight"
+        android:text="pet weight(KG)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/petBirthdayIn"/>
+    <EditText
+        android:id="@+id/petWeightIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petWeight"
+        android:inputType="numberDecimal|numberSigned"/>
+    <TextView
+        android:id="@+id/petSex"
+        android:text="pet Sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/petWeightIn"/>
+    <EditText
+        android:id="@+id/petSexIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petSex"
+        android:inputType="text"/>
+    <TextView
+        android:id="@+id/petVaccine"
+        android:text="pet Vaccination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/petSexIn"/>
+    <EditText
+        android:id="@+id/petVaccineIn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/petVaccine"
+        android:inputType="text"/>
+    <Button
+        android:text="Enter"
+        android:id="@+id/EnterVac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/petVaccineIn"
+        android:layout_alignTop="@+id/petVaccineIn"/>
+    <Button
+        android:text="Save"
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical = "true"
+        android:layout_centerHorizontal ="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/petVaccineIn"/>
+</RelativeLayout>
