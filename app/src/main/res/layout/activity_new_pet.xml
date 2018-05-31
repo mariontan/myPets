@@ -7,17 +7,23 @@
     android:id="@+id/newPet"
     tools:context="com.example.andorid.mypets.EnterPetDetails">
 
-    <TextView
+     <TextView
         android:id="@+id/mainText"
         android:text="Enter Pet Details:"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="Enter Picture"
+        android:id="@+id/pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainText"/>
     <TextView
         android:id="@+id/petType"
         android:text="pet type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mainText"/>
+        android:layout_below="@+id/pic"/>
     <EditText
         android:id="@+id/petTypeIn"
         android:layout_height="wrap_content"

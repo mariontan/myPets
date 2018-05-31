@@ -1,5 +1,6 @@
 package com.example.andorid.mypets;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by S410P on 5/22/2018.
@@ -18,6 +20,7 @@ public class FileIO {
     public static String getStorage(){
         return Environment.getExternalStorageDirectory().toString()+"/MyPets/petDetails/";
     }
+
     public static void write(String filename, byte[] data){
         File fOutputDir = new File(getStorage());
         File fOutput =new File(getStorage(),filename+".txt");
@@ -64,5 +67,24 @@ public class FileIO {
             Log.e("ERROR","Exception occurred"+e.getMessage());
         }
         return fileIn;
+    }
+
+
+    public static File createImageFile(Context context) throws IOException {
+        // Create an image file name
+        String mCurrentPhotoPath;
+        String timeStamp = "today";
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        //Log.i("INFO","folder: "+mCurrentPhotoPath);
+        return image;
     }
 }

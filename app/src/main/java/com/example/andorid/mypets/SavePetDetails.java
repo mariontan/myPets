@@ -12,6 +12,7 @@ import java.io.BufferedInputStream;
  * Created by S410P on 5/22/2018.
  */
 public class SavePetDetails extends Application {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     /**private String petName = "";
     private String petType = "";
     private String petWeight = "";
@@ -72,4 +73,6 @@ public class SavePetDetails extends Application {
                 clearForm((ViewGroup) findViewById(resource)); */
         }
     }
+
+
 }
