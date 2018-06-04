@@ -18,10 +18,11 @@ public class FileIO {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
     public static String getStorage(){
-        return Environment.getExternalStorageDirectory().toString()+"/MyPets/petDetails/";
-    }
+        return Environment.getExternalStorageDirectory().toString()+"/MyPets/petDetails/";//saving to an external directory
 
-    public static void write(String filename, byte[] data){
+    }
+    //for string inputs
+    public static void write(String filename, byte[] data, Boolean append){
         File fOutputDir = new File(getStorage());
         File fOutput =new File(getStorage(),filename+".txt");
 
@@ -34,7 +35,10 @@ public class FileIO {
             if(!fOutputDir.exists()){
                 fOutputDir.createNewFile();
             }
-            if(filename.equals("files")||filename.substring(filename.length()-3).equals("Vac")){
+            fileOut = new FileOutputStream(fOutput, append);//true for appending, false to overwrite file for the same fileName
+            fileOut.write(data);
+            fileOut.close();
+            /*if(filename.equals("files")||filename.substring(filename.length()-3).equals("Vac")){
                 fileOut = new FileOutputStream(fOutput, true);//true for appending
                 fileOut.write(data);
                 fileOut.close();
@@ -43,7 +47,7 @@ public class FileIO {
                 fileOut = new FileOutputStream(fOutput, false);//false is no append
                 fileOut.write(data);
                 fileOut.close();
-            }
+            }*/
         }catch(FileNotFoundException e){
             Log.e("ERROR", "File not found:" + fOutput.toString());
         }catch (Exception e){
@@ -69,18 +73,22 @@ public class FileIO {
         return fileIn;
     }
 
-
-    public static File createImageFile(Context context) throws IOException {
+    public static File createImageFile(String name,Context context) throws IOException {
         // Create an image file name
         String mCurrentPhotoPath;
-        String timeStamp = "today";
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        //String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName =name + "Pic";
+        Log.i("INFO",imageFileName);
+        //File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);//making the picture only accessible to the app itself
+        //Log.i("INFO",Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(getStorage());// saving to the same directory as the text files
+        /*File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        //        ".jpg",         /* suffix */
+        //        storageDir      /* directory */
+        //);*/
+        File image = new File(storageDir,imageFileName+".jpg");
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();

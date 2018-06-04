@@ -7,4 +7,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_view_pets">ViewPets</string>
     <string name="title_activity_view_pet_details">ViewPetDetails</string>
+    <string name="title_activity_edit_vac_rec">EditVacRec</string>
 </resources>

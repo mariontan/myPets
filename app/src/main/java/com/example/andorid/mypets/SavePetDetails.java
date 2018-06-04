@@ -33,10 +33,10 @@ public class SavePetDetails extends Application {
     public void setPetBirthday(String petBirthday) {this.petBirthday = petBirthday;}
     public void setPetSex(String petSex) {this.petSex = petSex;}*/
 
-    public void saveData(String filename,String petData){
+    public void saveData(String filename,String petData,Boolean appnd){
         if(FileIO.isStorageReady()){
             Log.i("INFO", "saving pet data");
-            FileIO.write(filename,petData.getBytes());
+            FileIO.write(filename,petData.getBytes(),appnd);
             Log.i("INFO", "pet data saved");
         }
     }

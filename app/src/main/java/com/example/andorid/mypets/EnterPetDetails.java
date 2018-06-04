@@ -25,7 +25,7 @@ public class EnterPetDetails extends AppCompatActivity {
     final int REQUEST_TAKE_PHOTO = 1;
     Context context = this;// get the context of present activity
 
-    private void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent(String name) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -33,7 +33,7 @@ public class EnterPetDetails extends AppCompatActivity {
             File photoFile = null;
             try {
                 //Log.i("INFO","createImageFile");
-                photoFile = FileIO.createImageFile(context);
+                photoFile = FileIO.createImageFile(name,context);
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.e("ERROR", "IOException occurred" + ex.getMessage());
@@ -43,6 +43,7 @@ public class EnterPetDetails extends AppCompatActivity {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);
+                Log.i("INFO",photoURI.toString());
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
@@ -87,13 +88,17 @@ public class EnterPetDetails extends AppCompatActivity {
                                     + petWeight.getText().toString() + ","
                                     + petSex.getText().toString();
                             String nme = petName.getText().toString() + ",";
-                            savePetDetails.saveData(nme.substring(0, nme.length() - 1), typNmeWgt);//overwrites if same filename
+                            savePetDetails.saveData(nme.substring(0, nme.length() - 1), typNmeWgt,false);//overwrites if same filename
                             savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
-                            Intent intent = new Intent(EnterPetDetails.this, ViewPetDetails.class).putExtra(Intent.EXTRA_TEXT,typNmeWgt);
+                            Intent intent = new Intent(EnterPetDetails.this, ViewPetDetails.class).putExtra(Intent.EXTRA_TEXT, typNmeWgt);//go back to new pet details
                             startActivity(intent);
                         }
                     }
+
             );
+
+            Button enterButton =(Button) findViewById(R.id.EnterVac);
+            enterVacRecord(enterButton, petName,petVaccine,savePetDetails);
         //entering new pet
         }catch (NullPointerException npe){
             Button saveButton = (Button) findViewById(R.id.save);
@@ -107,39 +112,41 @@ public class EnterPetDetails extends AppCompatActivity {
                                     +petWeight.getText().toString()+","
                                     +petSex.getText().toString();
                             String nme = petName.getText().toString()+",";
-                            savePetDetails.saveData("files",nme);
-                            savePetDetails.saveData(nme.substring(0,nme.length()-1),typNmeWgt);//overwrites if same filename
+                            savePetDetails.saveData("files",nme,true);
+                            savePetDetails.saveData(nme.substring(0,nme.length()-1),typNmeWgt,false);//overwrites if same filename
                             savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
                         }
                     }
             );
 
             Button enterButton =(Button) findViewById(R.id.EnterVac);
-            enterButton.setOnClickListener(
-                    new View.OnClickListener() {
+            enterVacRecord(enterButton, petName,petVaccine,savePetDetails);
 
-                        @Override
-                        public void onClick(View v) {
-                            String fileName = petName.getText().toString()+"Vac";
-                            savePetDetails.saveData(fileName, petVaccine.getText().toString()+",");
-                            petVaccine.setText("");
-                        }
-                    }
-            );
             Button picButton = (Button) findViewById(R.id.pic);
             picButton.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dispatchTakePictureIntent();
-
+                            dispatchTakePictureIntent(petName.getText().toString());
                         }
                     }
             );
         }
 
-   }
+    }
+    private void enterVacRecord(Button button, final EditText name, final EditText vaccine, final SavePetDetails save){
+        button.setOnClickListener(
+                new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                        String fileName = name.getText().toString()+"Vac";
+                        save.saveData(fileName, vaccine.getText().toString()+",",true);
+                        vaccine.setText("");
+                    }
+                }
+        );
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

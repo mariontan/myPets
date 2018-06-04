@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class ViewPetDetails extends AppCompatActivity {
     private List<String> petVac = new ArrayList<String>();
+    //private List<String> updatedPetVac = new ArrayList<String>();
     SavePetDetails savePetDetails = new SavePetDetails();
 
     private ArrayAdapter<String> listAdapter;
@@ -43,25 +45,43 @@ public class ViewPetDetails extends AppCompatActivity {
         petWeight.setText("Weight: " + details.get(3));
         petSex.setText("Sex: "+ details.get(4));
 
-        String vaccines = savePetDetails.getData(details.get(1)+"Vac");
+        final String vaccines = savePetDetails.getData(details.get(1)+"Vac");
+        final String name = details.get(1);
         //Log.i("INFO",petName.getText().toString());
         //Log.i("INFO",vaccines);
         petVac = Arrays.asList(vaccines.split("\\s*,\\s*"));
         listAdapter = new  ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, petVac);
         ListView listview = (ListView) findViewById(R.id.petVacList);
         listview.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
+        listview.setOnItemClickListener(//edit listview Item
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String vac = Integer.toString(position)+","+ name +","+vaccines ;
+                        Intent editVac = new Intent(ViewPetDetails.this,EditVacRec.class).putExtra(Intent.EXTRA_TEXT,vac);
+                        startActivity(editVac);
+                        finish();
+                    }
+                }
+        );
+        /*try {
+            Intent intent1 = getIntent();
+            updatedPetVac = Arrays.asList(intent1.getStringExtra(Intent.EXTRA_TEXT));
+            petVac.set(Integer.parseInt(updatedPetVac.get(1)), updatedPetVac.get(0));
+        }catch(ArrayIndexOutOfBoundsException bo){}*/
         Button edit =(Button) findViewById(R.id.editPetDetails);
         edit.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(ViewPetDetails.this,EnterPetDetails.class).putExtra(Intent.EXTRA_TEXT,petDetails);
+                        Intent intent = new Intent(ViewPetDetails.this, EnterPetDetails.class).putExtra(Intent.EXTRA_TEXT, petDetails);
                         startActivity(intent);
                     }
                 }
         );
-        listAdapter.notifyDataSetChanged();
+
     }
 
     @Override
