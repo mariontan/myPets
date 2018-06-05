@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by S410P on 5/22/2018.
@@ -38,16 +40,6 @@ public class FileIO {
             fileOut = new FileOutputStream(fOutput, append);//true for appending, false to overwrite file for the same fileName
             fileOut.write(data);
             fileOut.close();
-            /*if(filename.equals("files")||filename.substring(filename.length()-3).equals("Vac")){
-                fileOut = new FileOutputStream(fOutput, true);//true for appending
-                fileOut.write(data);
-                fileOut.close();
-            }
-            else {
-                fileOut = new FileOutputStream(fOutput, false);//false is no append
-                fileOut.write(data);
-                fileOut.close();
-            }*/
         }catch(FileNotFoundException e){
             Log.e("ERROR", "File not found:" + fOutput.toString());
         }catch (Exception e){
@@ -76,9 +68,8 @@ public class FileIO {
     public static File createImageFile(String name,Context context) throws IOException {
         // Create an image file name
         String mCurrentPhotoPath;
-        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        //String imageFileName = "JPEG_" + timeStamp + "_";
-        String imageFileName =name + "Pic";
+        String timeStamp = new SimpleDateFormat("MMddyyyy_HHmmss").format(new Date());
+        String imageFileName = name+"Pic_" + timeStamp + "_";
         Log.i("INFO",imageFileName);
         //File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);//making the picture only accessible to the app itself
         //Log.i("INFO",Environment.DIRECTORY_PICTURES);

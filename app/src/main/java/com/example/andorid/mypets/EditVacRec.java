@@ -38,7 +38,6 @@ public class EditVacRec extends AppCompatActivity {
                             newVacRecord=newVacRecord+vacData.get(i)+",";
                         }
                         savePetDetails.saveData(name + "Vac", newVacRecord, false);// to overwirte old data
-
                         Intent intent = new Intent(EditVacRec.this,ViewPets.class);
                         startActivity(intent);
                         finish();

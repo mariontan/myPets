@@ -3,6 +3,7 @@ package com.example.andorid.mypets;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,16 +13,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class ViewPetDetails extends AppCompatActivity {
     private List<String> petVac = new ArrayList<String>();
-    //private List<String> updatedPetVac = new ArrayList<String>();
+    private List<Integer> monthDays = new ArrayList<Integer>(Arrays.asList(31,28,31,30,31,30,31,31,30,31,30,31));
     SavePetDetails savePetDetails = new SavePetDetails();
 
     private ArrayAdapter<String> listAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         List<String> details = new ArrayList<String>();
@@ -29,7 +33,8 @@ public class ViewPetDetails extends AppCompatActivity {
         setContentView(R.layout.activity_view_pet_details);
         Intent intent = getIntent();
         final String petDetails = intent.getStringExtra(Intent.EXTRA_TEXT);
-
+        String currentDay = new SimpleDateFormat("MMddyyyy").format(new Date());
+        int curYear,curMonth,curDay,birthYear,birthMonth,birthDay,ageYear,ageMonth,ageDay,numDays = 0;
 
         details = Arrays.asList(petDetails.split("\\s*,\\s*"));
 
@@ -38,12 +43,55 @@ public class ViewPetDetails extends AppCompatActivity {
         TextView petBirthday = (TextView) findViewById(R.id.petBirthdayIndividual);
         TextView petWeight = (TextView) findViewById(R.id.petWeightIndividual);
         TextView petSex = (TextView) findViewById(R.id.petSexIndividual);
+        TextView petAge = (TextView) findViewById(R.id.petAgeIndividual);
+
+        //getting pet age
+        curYear = Integer.parseInt(currentDay.substring(4));
+        birthYear = Integer.parseInt(details.get(2).substring(4));
+        curMonth = Integer.parseInt(currentDay.substring(0, 2));
+        birthMonth = Integer.parseInt(details.get(2).substring(0, 2));
+        curDay = Integer.parseInt(currentDay.substring(2, 4));
+        birthDay = Integer.parseInt(details.get(2).substring(2,4));
+
+        //get age in years
+        if(birthMonth > curMonth){
+            if(curYear == birthYear ){
+                ageYear = 0;
+            }
+            else {
+                ageYear = curYear - birthYear - 1;
+            }
+        }
+        else{
+            ageYear = curYear - birthYear;
+        }
+        //get days
+        if(birthMonth < curMonth){
+            for(int i = birthMonth; i<curMonth-2;i++  ){//because lists index starts at 0
+                numDays = numDays + monthDays.get((i));
+            }
+            ageDay = monthDays.get(birthMonth-1)-birthDay+numDays+curDay;
+        }
+        else{
+            int j = 0;
+
+            for(int i = birthMonth; i<curMonth+11; i++){//because lists index starts at 0
+                Log.i("INFO",Integer.toString(i+j));
+                numDays = numDays + monthDays.get(i+j);
+                //Log.i("INFO", monthDays.get(i + j).toString());
+                if(i==11){
+                    j = -12;
+                }
+            }
+            ageDay = monthDays.get(birthMonth - 1) - birthDay + numDays + curDay;
+        }
 
         petType.setText("pet type: " + details.get(0));
         petName.setText("pet name: " + details.get(1));
         petBirthday.setText("Birthday: " + details.get(2));
         petWeight.setText("Weight: " + details.get(3));
         petSex.setText("Sex: "+ details.get(4));
+        petAge.setText("Age: " + ageYear+"Years "+ ageDay + "Days" );
 
         final String vaccines = savePetDetails.getData(details.get(1)+"Vac");
         final String name = details.get(1);
@@ -65,11 +113,7 @@ public class ViewPetDetails extends AppCompatActivity {
                     }
                 }
         );
-        /*try {
-            Intent intent1 = getIntent();
-            updatedPetVac = Arrays.asList(intent1.getStringExtra(Intent.EXTRA_TEXT));
-            petVac.set(Integer.parseInt(updatedPetVac.get(1)), updatedPetVac.get(0));
-        }catch(ArrayIndexOutOfBoundsException bo){}*/
+
         Button edit =(Button) findViewById(R.id.editPetDetails);
         edit.setOnClickListener(
                 new View.OnClickListener() {

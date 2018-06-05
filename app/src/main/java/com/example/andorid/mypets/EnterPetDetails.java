@@ -57,6 +57,11 @@ public class EnterPetDetails extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_pet);
+
+        Button saveButton = (Button) findViewById(R.id.save);
+        Button enterButton =(Button) findViewById(R.id.EnterVac);
+        Button picButton = (Button) findViewById(R.id.pic);
+
         List<String> details = new ArrayList<String>();
 
         final EditText petType = (EditText) findViewById(R.id.petTypeIn);
@@ -77,7 +82,6 @@ public class EnterPetDetails extends AppCompatActivity {
             petWeight.setText(details.get(3));
             petSex.setText(details.get(4));
 
-            Button saveButton = (Button) findViewById(R.id.save);
             saveButton.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -97,11 +101,9 @@ public class EnterPetDetails extends AppCompatActivity {
 
             );
 
-            Button enterButton =(Button) findViewById(R.id.EnterVac);
             enterVacRecord(enterButton, petName,petVaccine,savePetDetails);
         //entering new pet
         }catch (NullPointerException npe){
-            Button saveButton = (Button) findViewById(R.id.save);
             saveButton.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -119,10 +121,8 @@ public class EnterPetDetails extends AppCompatActivity {
                     }
             );
 
-            Button enterButton =(Button) findViewById(R.id.EnterVac);
             enterVacRecord(enterButton, petName,petVaccine,savePetDetails);
 
-            Button picButton = (Button) findViewById(R.id.pic);
             picButton.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
