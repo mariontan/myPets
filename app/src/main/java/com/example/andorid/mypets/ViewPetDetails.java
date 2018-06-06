@@ -3,7 +3,6 @@ package com.example.andorid.mypets;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,9 @@ public class ViewPetDetails extends AppCompatActivity {
         Intent intent = getIntent();
         final String petDetails = intent.getStringExtra(Intent.EXTRA_TEXT);
         String currentDay = new SimpleDateFormat("MMddyyyy").format(new Date());
-        int curYear,curMonth,curDay,birthYear,birthMonth,birthDay,ageYear,ageMonth,ageDay,numDays = 0;
+        int curYear,curMonth,curDay,birthYear,birthMonth,birthDay,ageYear,ageDay,numDays = 0;
+        int leapDay = 0;
+        boolean feb = false;
 
         details = Arrays.asList(petDetails.split("\\s*,\\s*"));
 
@@ -53,38 +54,27 @@ public class ViewPetDetails extends AppCompatActivity {
         curDay = Integer.parseInt(currentDay.substring(2, 4));
         birthDay = Integer.parseInt(details.get(2).substring(2,4));
 
-        //get age in years
-        if(birthMonth > curMonth){
-            if(curYear == birthYear ){
-                ageYear = 0;
-            }
-            else {
-                ageYear = curYear - birthYear - 1;
+
+        if(birthMonth > curMonth){//get age in years and days
+            int j = 0;
+            ageYear = Math.max(0,curYear-birthYear-1);//returns 0 if curYear = birthYear
+            for(int i = birthMonth; i<curMonth+11; i++){//because lists index starts at 0
+                if(i>11){j = -12;}
+                numDays = numDays + monthDays.get(i+j);
+                if(i==1||i==13){feb = true;}// add one day if current year is leap year
             }
         }
         else{
             ageYear = curYear - birthYear;
-        }
-        //get days
-        if(birthMonth < curMonth){
             for(int i = birthMonth; i<curMonth-2;i++  ){//because lists index starts at 0
                 numDays = numDays + monthDays.get((i));
+                if(i==1){feb = true;}// add one day if current year is leap year
             }
-            ageDay = monthDays.get(birthMonth-1)-birthDay+numDays+curDay;
         }
-        else{
-            int j = 0;
-
-            for(int i = birthMonth; i<curMonth+11; i++){//because lists index starts at 0
-                Log.i("INFO",Integer.toString(i+j));
-                numDays = numDays + monthDays.get(i+j);
-                //Log.i("INFO", monthDays.get(i + j).toString());
-                if(i==11){
-                    j = -12;
-                }
-            }
-            ageDay = monthDays.get(birthMonth - 1) - birthDay + numDays + curDay;
+        if(curYear%4==0&&feb == true){
+           leapDay = 1;
         }
+        ageDay = (monthDays.get(birthMonth-1)-birthDay)+numDays+curDay+leapDay;
 
         petType.setText("pet type: " + details.get(0));
         petName.setText("pet name: " + details.get(1));
