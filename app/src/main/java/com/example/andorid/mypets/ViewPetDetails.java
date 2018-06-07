@@ -3,6 +3,8 @@ package com.example.andorid.mypets;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,17 @@ public class ViewPetDetails extends AppCompatActivity {
 
     private ArrayAdapter<String> listAdapter;
 
+    private final String image_titles[] = {
+            "Img1",
+            "Img2",
+            "Img3"
+    };
+
+    private final Integer image_ids[] = {
+            R.drawable.img1,
+            R.drawable.img2,
+            R.drawable.img3,
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         List<String> details = new ArrayList<String>();
@@ -115,9 +128,30 @@ public class ViewPetDetails extends AppCompatActivity {
                     }
                 }
         );
-
+        //galleryView();
     }
 
+    private void galleryView(){
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
+        recyclerView.setLayoutManager(layoutManager);
+        ArrayList<CreateList> createLists = prepareData();
+        MyAdapter adapter = new MyAdapter(getApplicationContext(), createLists);
+        recyclerView.setAdapter(adapter);
+    }
+    private ArrayList<CreateList> prepareData(){
+
+        ArrayList<CreateList> theimage = new ArrayList<>();
+        for(int i = 0; i< image_titles.length; i++){
+            CreateList createList = new CreateList();
+            createList.setImage_title(image_titles[i]);
+            createList.setImage_ID(image_ids[i]);
+            theimage.add(createList);
+        }
+        return theimage;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
