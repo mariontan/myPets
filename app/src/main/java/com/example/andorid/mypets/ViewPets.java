@@ -14,6 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class ViewPets extends AppCompatActivity {
@@ -39,12 +40,20 @@ public class ViewPets extends AppCompatActivity {
         List<String> fileName = new ArrayList<String>();
         String files= savePetDetails.getData("files");// store filenames to files
         fileName = Arrays.asList(files.split("\\s*,\\s*"));
-        Collections.sort(fileName);
+        List<String> listWithoutDuplicates = new ArrayList<>(new HashSet<>(fileName));
+
+        Collections.sort(listWithoutDuplicates);
+        for(int i = 0; i<listWithoutDuplicates.size(); i++){
+            Log.i("INFO", listWithoutDuplicates.get(i));
+            petName.add(listWithoutDuplicates.get(i));
+            petData.add(savePetDetails.getData(listWithoutDuplicates.get(i)));
+        }
+        /*Collections.sort(fileName);
         for(int i = 0; i<fileName.size(); i++){
             Log.i("INFO", fileName.get(i));
             petName.add(fileName.get(i));
             petData.add(savePetDetails.getData(fileName.get(i)));
-        }
+        }*/
 
         listAdpater = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, petName);
         ListView listview = (ListView) findViewById(R.id.petListView);

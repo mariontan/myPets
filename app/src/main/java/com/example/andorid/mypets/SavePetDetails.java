@@ -73,6 +73,18 @@ public class SavePetDetails extends Application {
                 clearForm((ViewGroup) findViewById(resource)); */
         }
     }
-
-
+    public boolean checkForm(ViewGroup group, int viewToExclude) {//checks if entire text view is clear, counter to exclude text view
+       boolean emptyField = false;
+       int counter = 0;
+        for (int i = 0, count = group.getChildCount(); i < count; i++) {
+           View view = group.getChildAt(i);
+            if (view instanceof EditText) {
+                counter++;
+                if (((EditText) view).getText().toString().equals("")&&counter<viewToExclude) {
+                    emptyField = true;
+                }
+            }
+        }
+        return emptyField;
+    }
 }

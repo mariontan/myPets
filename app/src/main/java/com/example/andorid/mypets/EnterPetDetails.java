@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,19 +87,18 @@ public class EnterPetDetails extends AppCompatActivity {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String typNmeWgt = petType.getText().toString() + ","
-                                    + petName.getText().toString() + ","
-                                    + petBirthday.getText().toString() + ","
-                                    + petWeight.getText().toString() + ","
-                                    + petSex.getText().toString();
-                            String nme = petName.getText().toString() + ",";
-                            savePetDetails.saveData(nme.substring(0, nme.length() - 1), typNmeWgt,false);//overwrites if same filename
-                            savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
-                            Intent intent = new Intent(EnterPetDetails.this, ViewPetDetails.class).putExtra(Intent.EXTRA_TEXT, typNmeWgt);//go back to new pet details
-                            startActivity(intent);
+                                String typNmeWgt = petType.getText().toString() + ","
+                                        + petName.getText().toString() + ","
+                                        + petBirthday.getText().toString() + ","
+                                        + petWeight.getText().toString() + ","
+                                        + petSex.getText().toString();
+                                String nme = petName.getText().toString() + ",";
+                                savePetDetails.saveData(nme.substring(0, nme.length() - 1), typNmeWgt,false);//overwrites if same filename
+                                savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
+                                Intent intent = new Intent(EnterPetDetails.this, ViewPetDetails.class).putExtra(Intent.EXTRA_TEXT, typNmeWgt);//go back to new pet details
+                                startActivity(intent);
                         }
                     }
-
             );
 
             enterVacRecord(enterButton, petName,petVaccine,savePetDetails);
@@ -108,15 +108,22 @@ public class EnterPetDetails extends AppCompatActivity {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String typNmeWgt = petType.getText().toString()+","
-                                    +petName.getText().toString()+","
-                                    +petBirthday.getText().toString()+","
-                                    +petWeight.getText().toString()+","
-                                    +petSex.getText().toString();
-                            String nme = petName.getText().toString()+",";
-                            savePetDetails.saveData("files",nme,true);
-                            savePetDetails.saveData(nme.substring(0,nme.length()-1),typNmeWgt,false);//overwrites if same filename
-                            savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
+                            if(savePetDetails.checkForm((ViewGroup) findViewById(R.id.newPet),5)==true){
+                                Toast.makeText(getApplicationContext(),"Please input on all fields before saving",Toast.LENGTH_LONG).show();
+                                ViewGroup group = (ViewGroup) findViewById(R.id.newPet);
+
+                            }
+                            else{
+                                String typNmeWgt = petType.getText().toString()+","
+                                        +petName.getText().toString()+","
+                                        +petBirthday.getText().toString()+","
+                                        +petWeight.getText().toString()+","
+                                        +petSex.getText().toString();
+                                String nme = petName.getText().toString()+",";
+                                savePetDetails.saveData("files",nme,true);
+                                savePetDetails.saveData(nme.substring(0,nme.length()-1),typNmeWgt,false);//overwrites if same filename
+                                savePetDetails.clearForm((ViewGroup) findViewById(R.id.newPet));
+                            }
                         }
                     }
             );
@@ -132,8 +139,8 @@ public class EnterPetDetails extends AppCompatActivity {
                     }
             );
         }
-
     }
+
     private void enterVacRecord(Button button, final EditText name, final EditText vaccine, final SavePetDetails save){
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -165,7 +172,6 @@ public class EnterPetDetails extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
